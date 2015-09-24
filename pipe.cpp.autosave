@@ -1,0 +1,20 @@
+#include "pipe.h"
+
+Pipe::Pipe()
+{
+    
+}
+
+bool Pipe::create(const std::string &name)
+{
+    // \\.\pipe\pipename
+    std::string pipeName = std::string("\\\\.\\pipe\\") + name;
+    mHandle = CreateNamedPipe(pipename.c_str,      
+}
+
+
+
+Pipe::~Pipe()
+{
+}
+

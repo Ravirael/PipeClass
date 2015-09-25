@@ -15,7 +15,7 @@ class Pipe
 protected:
     HANDLE mHandle;
     std::string mName;
-    const std::string mPrefix;
+    static std::string mPrefix;
 
     void throwError(const std::string &what)
     {
@@ -24,7 +24,7 @@ protected:
     }
 
 public:
-    Pipe(const std::string &name):mName(name),mPrefix("\\\\.\\pipe\\")
+    Pipe(const std::string &name):mName(name)
     {
         
     }
@@ -142,5 +142,8 @@ public:
         close();
     }
 };
+
+template <typename T>
+std::string Pipe<T>::mPrefix = "\\\\.\\pipe\\";
 
 #endif // PIPE_H

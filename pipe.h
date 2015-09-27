@@ -46,12 +46,14 @@ public:
 
     unsigned write(const std::vector<T> &vector)
     {
-        long unsigned bytesWritten;
         if (!WriteFile(mHandle, static_cast<LPVOID>(vector.data()), vector.data()*sizeof(T), &bytesWritten, NULL))
-        {
-            throwError("Data writing error!");
-        }
-        return bytesWritten;
+        return write(vector.data(), vector.size()*sizeof(T));
+    }
+
+    template <typename U>
+    unsigned write(U variable)
+    {
+        return write(static_cast<T*>(&variable), sizeof(U));
     }
 
     unsigned read(T *buffer, unsigned bufferSizeInBytes)

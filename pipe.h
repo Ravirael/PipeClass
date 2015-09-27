@@ -46,7 +46,6 @@ public:
 
     unsigned write(const std::vector<T> &vector)
     {
-        if (!WriteFile(mHandle, static_cast<LPVOID>(vector.data()), vector.data()*sizeof(T), &bytesWritten, NULL))
         return write(vector.data(), vector.size()*sizeof(T));
     }
 

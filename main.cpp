@@ -9,12 +9,14 @@ void serverProcess(PipeServer<int> &pipe)
 {
     int array[100];
     int k = 0;
-    for (int &i : array)
-        i = k++;
+
 
     pipe.open(2);
     pipe.waitForClient();
-    std::cout << pipe.write(array, sizeof(array)) << " bytes written!\n";
+    for (int i = 0; i < 100; ++i)
+        pipe.write(i);
+    //std::cout << pipe.write(array, sizeof(array)) << " bytes written!\n";
+    std::cout<< "Writing complete!";
 }
 
 void clientProcess(PipeClient<int> &pipe)
@@ -25,9 +27,15 @@ void clientProcess(PipeClient<int> &pipe)
     while (!pipe.waitForServer(5000));
     pipe.connect();
 
-    std::cout << "Bytes available: " << pipe.bytesAvailable() << std::endl;
-    data = pipe.read(10);
-    //std::cout << pipe.read(array, sizeof(array)) << " bytes read!\n";
+   //std::cout << "Bytes available: " << pipe.bytesAvailable() << std::endl;
+
+    while (pipe.bytesAvailable() < 400)
+    {
+        std::cout << "Waiting!" << std::endl;
+    }
+
+    //data = pipe.read(100);
+    std::cout << (data = pipe.read(100)).size()*sizeof(int) << " bytes read!\n";
 
     for (int i : data)
         std::cout << i << std::endl;

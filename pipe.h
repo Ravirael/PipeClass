@@ -52,7 +52,7 @@ public:
     template <typename U>
     unsigned write(U variable)
     {
-        return write(static_cast<T*>(&variable), sizeof(U));
+        return write(reinterpret_cast<T*>(&variable), sizeof(U));
     }
 
     unsigned read(T *buffer, unsigned bufferSizeInBytes)
@@ -76,6 +76,19 @@ public:
 
         vector.resize(bytesRead/sizeof(T));
         return vector;
+    }
+
+    template <typename U>
+    U read()
+    {
+        long unsigned bytesRead;
+        U value;
+        if (!ReadFile(mHandle, static_cast<LPVOID>(&value), sizeof(U), &bytesRead, NULL))
+        {
+            throwError("Data reading error!");
+        }
+
+        return value;
     }
 
     unsigned peek(T *buffer, unsigned bufferSizeInBytes)
